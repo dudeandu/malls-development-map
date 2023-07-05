@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Toronto Star graphic template</title>
+    <link rel="stylesheet" href="https://misc.thestar.com/interactivegraphic/assets/style.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet"> 
+
+    <script src="https://misc.thestar.com/interactivegraphic/libraries/d3v4.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> 
+
+    <link rel="stylesheet" type="text/css" href="https://misc.thestar.com/interactivegraphic/libraries/interactive-graphic-cta/cta-style.css">
+
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.css' rel='stylesheet' />
+
+    <!-- <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v2.3.0/mapbox-gl-geocoder.min.js'></script>
+    <link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v2.3.0/mapbox-gl-geocoder.css' type='text/css' /> -->
+
+
+<style>
+
+.graphic-wrapper {
+  /* max-width: 660px; */
+}
+
+.interactive-graphic-cta {
+    white-space: normal;
+}
+
+#map {
+    height: 600px;
+    width: 100%;
+}
+
+#info {
+    position: absolute;
+    bottom: 37px;
+    right: 8px;
+    z-index: 11;
+    max-width: 300px;
+    height: auto;
+    background-color: rgba(63,63,63,0.9);
+    border-radius: 4px;
+}
+
+#legend {
+    padding: 10px;
+     background-color: rgba(63,63,63,0.9);
+     color: #fff;
+    line-height: 18px;
+    z-index: 111;
+    border-radius: 3px;
+    max-width: 300px;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+#legend.hidden {
+    display: none;
+}
+
+
+#info #closebutton {
+    float: right;
+    position: absolute;
+    /* height: 20px; */
+    /* width: 20px; */
+    cursor: pointer;
+    margin: 10px;
+    /* display: none; */
+    right: 8px;
+}
+
+#info #closebutton .icon {
+   position: absolute;
+   top: 50%;
+   left: 50%;
+   transform: translate(-50%,-50%);
+   width: 16px;
+   height: 16px;
+
+}
+.legend-key {
+    display: inline-block;
+    border-radius: 20%;
+    width: 10px;
+    height: 10px;
+    margin-right: 5px;
+    /* opacity: 0.8;*/
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.1);
+    background-size: cover;
+    background-position-y: 14px;
+}
+
+#legend h4 {
+    margin: 0 0 8px 0;
+    font-size: 1.2em;
+}
+
+.imgContainer {
+    max-width: 100%;
+    width: 300px;
+}
+
+.imgContainer img {
+    width: 100%;
+}
+
+.call-to-action:after {
+    content: "";
+    font-size: 1.17em;
+    line-height: 20px;
+    font-weight: bold;
+}
+
+@media (max-width: 768px) {
+    #info {
+        left: 8px;
+        right: auto;
+    }
+    
+    .graphic-bottom__notetext {
+        font-size: 14px;
+    }
+    
+    #legend {
+        /* height: 17px; */
+        height: auto;
+        overflow: hidden;
+        max-width: auto;
+    }
+    
+    #legend.open {
+        height: auto;
+        width: auto;
+    }
+}
+
+@media (max-width: 600px) {
+    #map {
+        height: 400px;
+        width: 100%;
+    }
+    .imgContainer {
+        display: none;
+    }
+}
+
+@media only screen and (min-width: 768px) {
+    .legend {
+        display: block;
+    }
+
+    .call-to-action:after {
+        content: "";
+    }
+}
+
+.highlight {
+    font-weight: bold;
+}
+
+
+
+.dates{
+    text-transform: uppercase;
+}
+
+
+
+
+</style>
+</head>
+<body>
+  <div class="graphic-wrapper graphic-1">
+    <div class="graphic-top">
+        <h2 class="graphic-top__graphic-hed">Add your heading here</h2>
+        <h3 class="graphic-top__graphic-dek">A longer dek could be required to fully explain what the data is. A longer dek could be required to fully explain what the data is.</h3>
+        
+        <span class="interactive-graphic-cta interactive-graphic-cta__desktop"><img class="interactive-graphic-cta-image" src="https://misc.thestar.com/interactivegraphic/libraries/interactive-graphic-cta/SVG/Hover.svg" height="23px">Hover or </span>
+        <span class="interactive-graphic-cta interactive-graphic-cta__desktop"><img class="interactive-graphic-cta-image" src="https://misc.thestar.com/interactivegraphic/libraries/interactive-graphic-cta/SVG/Tap.svg" height="23px">click on circles to see the descriptions</span>
+        <span class="interactive-graphic-cta interactive-graphic-cta__mobile"><img class="interactive-graphic-cta-image" src="https://misc.thestar.com/interactivegraphic/libraries/interactive-graphic-cta/SVG/Tap.svg" height="23px">Tap on circles to see the descriptions</span>
+
+        <div class="graphic-legend">
+            <div class="graphic-legend-container">
+                <div class="graphic-legend-dot" id="legend-dot-1"></div><p class="graphic-legend-text">Locations TK</p>
+            </div>
+            <!-- <div class="graphic-legend-container">
+                <div class="graphic-legend-dot" id="legend-dot-2"></div><p class="graphic-legend-text">Legend text 2</p>
+            </div> -->
+        </div>
+    </div>
+
+    <div class="graphic">
+
+     
+        <div id='map'>
+            <div id="info">
+                <div class="hidden" id='legend'>
+                    <div id="closebutton"><image class="icon" src="img/close-icon.svg" border="0"></div>
+                    <h4 id="mallName"></h4>
+                    <div class="imgContainer"><img src="" alt="" id="popupImage"></div>
+                    <p class="location"></p>
+                    <!-- <p class="dates">Start Date: <span id="startDate"></span></p> -->
+                    <!-- <p class="dates">End Date: <span id="endDate"></span></p> -->
+                    <p id="description"></p>
+                    <p id="relatedStories"></p>
+                </div>
+            </div>
+        </div>
+  
+
+
+    </div>
+
+
+
+   
+
+    <div class="graphic-bottom">
+        <!-- <p class="graphic-bottom__notetext" id="notetext">* Any further note to explain one aspect of the data could go here.</p> -->
+        <p class="graphic-bottom__graphic-source" id="source">Source: Stats report</p>
+        <p class="graphic-bottom__graphic-byline" id="byline">Toronto Star graphic</p>
+    </div>
+  </div>
+
+<script>
+
+        document.addEventListener('touchstart', {});
+
+        var rightPush = "0px";
+        var desktopLonComp = 0.036;
+        var mobileLatComp = 0;
+        var mobilezoomComp = 0;
+        var xTicks = 5;
+        var zoomTo = 12;
+
+        if (window.innerWidth < 526) {
+            rightPush = "0px";
+            desktopLonComp = 0;
+            mobileLatComp = -0.04;
+            mobilezoomComp = -1;
+            xTicks = 3
+        }
+
+        if (window.innerWidth < 400) {
+            rightPush = "0px";
+            desktopLonComp = 0;
+            mobileLatComp = -0.04;
+            mobilezoomComp = -1;
+            xTicks = 4
+        }
+
+        var zoomtoOnLargeAreas = function(e) {
+            if (e != '') {
+                return 0
+            } else {
+                return -2
+            }
+        }
+
+        if (window.innerWidth < 620) {
+            var zoom = 7.663654007844582;
+            var center = [-79.38555, 43.59400]
+            var bounds = [
+                [-85.11079, 39.85641], // Southwest coordinates
+                [-75.00513, 47.10613] // Northeast coordinates
+            ];
+        } else {
+            // var zoom = 9.626811837802922
+            var zoom = 8.126811837802922
+            var center = [-79.38555, 43.69400]
+            var bounds = [
+                [-81.66958, 42.55397], // Southwest coordinates
+                [-77.11247, 44.68875] // Northeast coordinates
+            ];
+
+        }
+
+        //Put your Mapbox Public Access token here
+        mapboxgl.accessToken = 'pk.eyJ1IjoidG9yb250b3N0YXIiLCJhIjoicjB0aUZoayJ9.kA7XwicoTQeHbRCo5dzjkw';
+        // mapboxgl.accessToken = 'pk.eyJ1IjoidG9yb250b3N0YXIiLCJhIjoiY2wxNWdpbHQzMHQzOTNqb2Q2dzJleGhjayJ9.ayK4stWs34ZXD6C-MTbwqQ';
+
+        //Load a new map in the 'map' HTML div
+        var map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/torontostar/cl09svm8d001l14mshicxzxnj',
+            center: center,
+            zoom: zoom + mobilezoomComp + 1.5,
+            maxBounds: bounds,
+            minZoom: 6,
+
+        });
+
+        // Add zoom and rotation controls to the map.
+        // map.addControl(new mapboxgl.NavigationControl());
+        const nav = new mapboxgl.NavigationControl();
+        map.addControl(nav, 'top-left');
+
+        //   map.scrollZoom.disable();
+
+        map.dragRotate.disable();
+
+        map.touchZoomRotate.disableRotation();
+
+        var hoveredStateId = null;
+
+        //Load the vector tile source from our Mapbox Pedestrian traffic example
+        map.on('load', function() {
+
+            map.addSource("region-shapes", {
+                type: "geojson",
+                data: './data/gta-regions.geojson',
+            });
+
+            map.addSource("mall-map-data", {
+                type: "geojson",
+                //   data: jsonmapbuilder,
+                data: './data/map.geojson',
+            });
+
+            map.addLayer({
+                    id: 'regionArealines',
+                    type: 'line',
+                    source: 'region-shapes',
+                    // "source-layer": "trreb-all-zones-2-7x19lo",
+                    layout: {
+                        'visibility': 'visible'
+                    },
+                    paint: {
+                        "line-color": "#707070",
+                        "line-width": 2,
+                        'line-opacity': [
+                            'interpolate',
+                            // Set the exponential rate of change to 0.5
+                            ['exponential', 0.5],
+                            ['zoom'],
+                            // When zoom is 10, buildings will be 100% transparent.
+                            5,
+                            1,
+                            // When zoom is 10, buildings will be 100% transparent.
+                            10,
+                            0.9,
+                            // When zoom is 10, buildings will be 100% transparent.
+                            15,
+                            0.0
+                        ]
+                    }
+                },
+                'waterway-label');
+
+            //------------------------------------------------------------------------ CIRCLES
+
+            map.addLayer({
+                id: 'malls',
+                type: 'circle',
+                source: 'mall-map-data',
+                paint: {
+                    'circle-radius': 8,
+                    'circle-color': "rgba(238, 136, 51,0.75)",
+                    // 'circle-color': ['match',
+                    //                ['get', 'active'],
+                    //                  'yes',
+                    //                  "#e37d10",
+                    //                  /* other */ '#c49d74'
+                    //             ],
+                    'circle-stroke-width': ["case", ["boolean", ["feature-state", "hover"], false],
+                        3,
+                        0
+                    ]
+                }
+                // ,
+                // "filter": ["==", "College", "Centennial"]
+            });
+
+
+            var hoveredStateIdChecker = 0;
+
+            var hoverON = function(e) {
+                // console.log(e.features[0].properties.time)
+                // $("#tooltip").css("visibility", "visible");
+
+                console.log(e)
+
+                hoveredStateId = e.features[0].id;
+                console.log(e.features[0].properties)
+
+
+                if (hoveredStateIdChecker != hoveredStateId) {
+                    map.setFeatureState({
+                        source: 'mall-map-data',
+                        id: hoveredStateIdChecker
+                    }, {
+                        hover: false
+                    });
+                }
+
+
+                // var relatedLink = ''
+                // if (e.features[0].properties.related != '') {
+                //     relatedLink = e.features[0].properties.related
+                //     $('#relatedStories').css('display', 'block')
+                // } else {
+                //     $('#relatedStories').css('display', 'none')
+                // }
+
+                // if (e.features[0].properties.active == 'yes') {
+                //     blockadeStatus = 'Active'
+                //     $('#status').css('color', '#e37d10')
+                // } else {
+                //     blockadeStatus = 'Inactive'
+                //     $('#status').css('color', '#fff')
+                // }
+
+
+                $('#legend').removeClass('hidden')
+                map.setFeatureState({
+                    source: 'mall-map-data',
+                    id: hoveredStateId
+                }, {
+                    hover: true
+                });
+                d3.select('#mallName').html(e.features[0].properties['Centre Name'])
+                d3.select('#popupImage').attr("src","./img/" + e.features[0].properties['Centre Image'])
+                // d3.select('mallName').html(e.features[0].id)
+                // d3.select('#status').html(blockadeStatus)
+                d3.select('#description').html(e.features[0].properties['Redevelopment Plans'])
+                // d3.select('#relatedStories').html('<a href="' + relatedLink + '" target=”_blank”>Read Story</a>')
+
+
+                map.getCanvas().style.cursor = 'pointer';
+
+
+                hoveredStateIdChecker = hoveredStateId;
+            }
+
+            map.on('click', 'malls', function(e) {
+                hoverON(e)
+            });
+
+            map.on('mouseover', 'malls', function(e) {
+                hoverON(e)
+            });
+
+            // map.on('click', 'circleTester_small', function(e) {
+            //     hoverON(e)
+            // });
+
+
+
+            $("#closebutton").on("click", function(d) {
+
+                console.log("hit")
+
+                $("#legend").addClass("hidden");
+                if (hoveredStateId) {
+                    map.setFeatureState({
+                        source: 'mall-map-data',
+                        id: hoveredStateId
+                    }, {
+                        hover: false
+                    });
+                }
+
+                hoveredStateId = null;
+            });
+
+        }) /// END OF MAP LOAD
+
+
+        //// END OF MAP
+
+
+        function resize() {
+            var message = {
+                'resize': {
+                    'iframe': 'graphic-iframe-1',
+                    'height': document.getElementsByClassName('graphic-1')[0].offsetHeight + 20
+                }
+            };
+
+            parent.postMessage(message, "*");
+        };
+
+        window.addEventListener('load', function() {
+            resize();
+        });
+
+        window.addEventListener("resize", function() {
+            resize();
+        });
+
+        setTimeout(function() {
+            resize();
+        }, 800);
+
+
+        document.addEventListener("touchstart", function() {}, true);
+
+</script>
+
+<!-- <style>#graphic-iframe-1{padding:0;width:100%;border:0;overflow:hidden;}</style><iframe id="graphic-iframe-1" src="SOURCETKTKTKT" scrolling="no" height="1050" title="embedded content"></iframe> -->
+
+</body>
+</html>
